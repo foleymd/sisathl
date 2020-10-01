@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block main_header %}Student Athlete System{% endblock %}
+
+            {% block nav_items %}
+            <a class="nav-a" href="{% url 'portal' %}"><span class="nav_li">Home</span></a>
+            <a class="nav-a" href="{% url 'student' %}"><span class="nav_li">My Forms</span></a>
+            {% endblock %}
+
+  	    {% block inner_header %}{% endblock %}
+        <div>{% block content %}    {% endblock %}</div>

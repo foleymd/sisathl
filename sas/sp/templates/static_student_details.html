@@ -1,0 +1,34 @@
+<div class="current_details">
+
+<h3>Student Details</h3>
+
+    <div>Name: {{ athlete.name }}</div>
+    <div>EID: {{ athlete.eid }}</div>
+    <div>CCYYS: {{ athlete_ccyys.ccyys }} </div>
+    <div>Number Full Time Semesters: {{ athlete_ccyys.num_ft_semesters }}</div>
+
+    {% if user_type != 'D' %}
+    {% if athlete_ccyys.ccyys == current_ccyys_int %} 
+        {% if major.first_or_second == '2' %}
+            <div>College: {{ nrdpaec2.recv.college_name_2 }}</div>
+            <div>Major: {{ nrdpaec2.recv.major_name_2 }}</div>
+            <div>Catalog: {{ major.catalog_begin }} - {{ major.catalog_end }}</div> 
+        {% else %}
+    	    <div>College: {{ nrdpaec2.recv.college_name }}</div>
+            <div>Major: {{ nrdpaec2.recv.major_name }}</div>
+            <div>Catalog: {{ major.catalog_begin }} - {{ major.catalog_end }}</div> 
+        {% endif %}     
+    {% else %}
+            <div>College: {{ major.final_college_name }}</div>
+            <div>Major: {{ major.final_major_name }}</div>
+            <div>Catalog: {{ major.final_catalog_begin }} - {{ major.final_catalog_end }}</div> 
+    {% endif %}
+    {% endif %}  
+
+    <div>Sport(s):
+        {% for sport in athlete_ccyys_sport %}
+            {{ sport.sport_description }}
+        {% endfor %}
+    </div>  
+      
+</div> 

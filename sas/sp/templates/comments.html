@@ -1,0 +1,57 @@
+<div class="container">
+        {% if users_turn %}
+        <div id="add_a_comment">
+            <form id="comments_form" action="" method="POST">
+                {% csrf_token %}
+                    <div id="text_xx">{{ add_comment_form.comments }}</div>
+                        <a href="#" class="btn btn-primary comment_action submit_button" id='a_{% if comment_required %}00{% else %}xx{% endif %}'>
+                            <span class="glyphicon glyphicon-comment"></span> Add Comment
+                        </a>
+              </form>
+        </div>    <!--add_a_comment-->
+        {% endif %}
+
+        <div id="old_comments">
+            <div class="text-center">
+                <h4>Comments</h4>
+            </div>
+                {{ comment_formset.management_form }}
+                <ul class="list-unstyled">
+                {% for comment in comment_formset %}
+                    <li class="ui-state-default">
+                    <strong class="pull-left user">{{ comment.user_name }}</strong>
+                    <small class="pull-right text-muted timestamp">{{ comment.timestamp }}</small><br/>
+                    {% if comment.in_editing_mode %}
+                        <form id="edit_form"
+                              action="/apps/sisathl/sas/sp/comments/"
+                              method="POST">
+                            {% csrf_token %}
+                            {{ comment.form_type }}
+                            {{ comment.form_id }}
+                            <div class="comment" id="text_{{ comment.id.value }}">{{ comment.comments }}</div>
+                           <div class="edit_buttons">
+                                <div>
+                                    <a href="#" class="btn btn-primary btn-sm comment_action action_button" id='s_{{ comment.id.value }}'><span class="glyphicon glyphicon-floppy-disk" title="Save"></span></a>
+                                </div>
+                            </div>
+                        </form>
+                    {% else %}
+                        <div class="comment{% if comment.editable %} comment_editable{% endif %}">{{ comment.comments }}
+
+                        {% if comment.editable %}
+                            <div class="edit_buttons">
+                                <div>
+                                    <a href="#" class="btn btn-primary btn-sm comment_action action_button" id='e_{{ comment.id.value }}'><span class="glyphicon glyphicon-pencil" title="Edit"></span></a>
+                                </div>
+                                <div>
+                                    <a href="#" class="btn btn-primary btn-sm comment_action action_button" id='d_{{ comment.id.value }}'><span class="glyphicon glyphicon-remove" title="Delete"></span></a>
+                                 </div>
+                            </div>
+                        {% endif %}
+                        </div>
+                    {% endif %}
+                    </li>
+                {% endfor %}
+                </ul>
+        </div> <!-- old comments -->
+</div>

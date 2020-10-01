@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block main_header%}<div class="boing">Athletics Satisfactory Progress System</div>{% endblock %}
+
+
+            {% block nav_items %}
+        	<a class="nav-a" href="{% url 'index' %}"><span class="nav_li">Home</span></a>
+  			<a class="nav-a" href="{% url 'inbox' %}"><span class="nav_li">Inbox</span></a>
+            {% if user_type == 'A' %}
+  				<a class="nav-a" href="{% url 'create_forms' %}"><span class="nav_li">Create Forms</span></a>
+  			{% endif %}		
+      		{% if user_type == 'A' %}
+    		    <a class="nav-a" href="{% url 'custom_form' %}"><span class="nav_li">Custom Forms</span></a>
+            {%  endif %}
+            {% if user_type == 'A' or user_type == 'R' %}
+      			<a class="nav-a" href="{% url 'user_admin' %}"><span class="nav_li">Manage Users</span></a>
+            {% endif %}
+            {% if user_type == 'A' %}
+    			<a class="nav-a" href="{% url 'ccyys_admin' %}"><span class="nav_li">Manage Dates</span></a>
+    		{% endif %}	
+    		
+    		<a class="nav-a" href="{% url 'log' %}"><span class="nav_li">Log</span></a>
+            {% endblock %}
+
+{% block script %}
+ <script  type="text/Javascript">
+
+// ***************** Pop up windows *****************
+function open_instructions() {
+    url = "{% url 'spd_instructions' %}" + "#{{ instructions_tag }}"
+    mywindow = window.open(url, "mywindow",
+            "location=right, scrollbars=yes, width=600, height=800");
+    mywindow.moveTo(0,0);
+}
+function contact_form() {
+    mywindow = window.open("{% url 'contact' %}", "mywindow",
+            "location=right, scrollbars=yes, width=600, height=470");
+    mywindow.moveTo(0,0);
+}
+function open_log_details(record_id) {
+    url = '{% url 'log_record' %}' + '?record_id=' + record_id
+    mywindow = window.open(url, "log_window",
+             "location=right, scrollbars=yes,width=1200,height=850");
+    mywindow.moveTo(0,0);
+}
+</script>
+{% endblock %}

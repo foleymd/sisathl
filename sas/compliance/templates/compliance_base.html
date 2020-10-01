@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block main_header %}Compliance Forms{% endblock %}
+
+            {% block nav_items %}
+        	<a class="nav-a" href="{% url 'admin' %}"><span class="nav_li">Student List</span></a>
+            <a class="nav-a" href="https://utexas.qualtrics.com/ControlPanel/"><span class="nav_li">Qualtrics</span></a>
+            <a class="nav-a" href="https://utdirect.utexas.edu/easi/index.WBX?easi_process=ATH_COMPLIANCE&easi_process_title=Athletic%20Compliance"><span class="nav_li">EASI Form History</span></a>
+            <a class="nav-a" href="https://utdirect.utexas.edu/nrath/nrath-comp/index.WBX"><span class="nav_li">Old Student Forms</span></a>
+            {% endblock %}
+
+  	    {% block inner_header %}{% endblock %}
+        <div>{% block content %}    {% endblock %}</div>

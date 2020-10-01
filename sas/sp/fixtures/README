@@ -1,0 +1,13 @@
+These files are used to quickly load up the database with fake data when needed
+for testing. The major file needed to run the tests in tests.py is entire_db.json.
+It is in the athletics shared folder. You should put a local copy in this
+fixtures folder. Because it contains realistic test data, for FERPA reasons you
+want to exclude it from version control.
+
+How to create fixtures:
+http://django-testing-docs.readthedocs.org/en/latest/fixtures.html
+
+Our models use contenttypes which can cause trouble when creating/using
+fixtures. The way to avoid this is to add the option --natural to the dumpdata
+statement.
+http://stackoverflow.com/questions/853796/problems-with-contenttypes-when-loading-a-fixture-in-django

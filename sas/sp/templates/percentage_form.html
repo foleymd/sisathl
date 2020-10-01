@@ -1,0 +1,117 @@
+{% extends "student_details.html" %}
+{% load crispy_forms_tags %}
+
+{% block inner_header %}
+<h2>Fulfillment of Percentage of Degree Requirements</h2>
+{% include 'ferpa_banner.html' %}
+{% endblock %}
+{% if percentage.approved_by_reg %}
+    <div class="alert alert-success">
+          Certification has been completed for {{ athlete.eid }}.
+    </div>
+{% endif %}
+{% block form %}
+
+<div class="rules_and_regs">
+
+<p>The NCAA requires student-athletes to reach specific percentage of degree benchmarks based on their years
+of full-time enrollment (NCAA Bylaw 14.4.3.2*). The Athletics Department and the Office of the Registrar
+recognize that this is a projection based on successful completion of their current coursework and transfer or
+acceptance into the major listed below.</p>
+
+<p>*Bylaw 14.4.3.2 Fulfillment of Percentage of Degree Requirements. A student-athlete who is entering his or her third year of collegiate
+enrollment shall have completed successfully at least 40 percent of the course requirements in the student's specific degree program. A
+student-athlete who is entering his or her fourth year of collegiate enrollment shall have completed successfully at least 60 percent of the
+course requirements in the student's specific degree program. A student-athlete who is entering his or her fifth year of collegiate enrollment
+shall have completed successfully at least 80 percent of the course requirements in the student's specific degree program.</p>
+
+
+</div>
+{% include "static_student_details.html" %}
+
+<form action="{% url 'percentage_of_degree' major_id=major.id %}" method="POST">{% csrf_token %}
+
+<div class="college_major_percent">
+	<h3>College/Major Info</h3> 
+	{% if major_form.errors %}
+	    <p style="color: red;">
+	    Please correct the errors below:</p>
+			<ul  style="color: red;">
+                {%  for error in major_form.non_field_errors %}
+                    <li>{{ error|striptags }}</li>
+                {% endfor %}
+				{% for field in major_form %}
+					{% if field.errors %}<li>{{ field.label }}: {{ field.errors|striptags }}</li>{% endif %}
+				{% endfor %}
+			</ul>
+	{% endif %}
+	
+    <div class="form-inline" id="major_form">
+        {% include 'major_form.html' %}
+    </div>
+</div>
+
+<div class="percent">
+	<h3>Percentage of Degree</h3> 
+	<a id="audit_link" href="https://utdirect.utexas.edu/apps/degree/audits/requests/history/?search_type=F&amp;eid={{ athlete.eid }}&amp;submit=Submit" target="_blank">Audit results for {{ athlete.name }}</a>
+	{% if percent_form.errors %}
+	    <p style="color: red;">
+	    Please correct the errors below:</p>
+			<ul  style="color: red;">
+                {%  for error in percent_form.non_field_errors %}
+                    <li>{{ error|striptags }}</li>
+                {% endfor %}
+				{% for field in percent_form %}
+					{% if field.errors %}<li>{{ field.label }}: {{ field.errors|striptags }}</li>{% endif %}
+				{% endfor %}
+			</ul>
+	{% endif %}
+	
+        	<div class="form-inline">       	
+               	{% crispy percent_form %}			
+       	    </div>
+
+</div>
+   
+
+                 
+{% if users_turn %}                    
+<div class="form-actions">
+    {% if percentage.approved_by_reg %}
+        <input type="submit" name="return" value="Recall certification" class="btn btn-primary" id="submit-return">
+	{% elif return_recipient %}
+		<input type="submit" name="return" value="Return to {{ return_recipient }}" class="btn btn-primary" id="submit-return">
+	{% endif %}
+	{% if not percentage.approved_by_reg  %}
+    <input type="submit" name="submit" value="Save" class="btn btn-primary" id="submit-save">
+    {% endif %}
+    {% if user_type == 'R' and advance_recipient %}
+    <input type="submit" name="sign" value="Sign and certify" class="btn btn-primary" id="submit-sign">
+    {% elif advance_recipient %}
+    	<input type="submit" name="sign" value="Sign and send to {{ advance_recipient }}" class="btn btn-primary" id="submit-sign">
+    {% endif %}
+</div>        
+{% endif %}     
+
+
+ 
+</form>
+
+
+    {% if user_type == 'A' and users_turn and not percentage.routed_to_dean_by %}
+    <form style="display: inline" class="delete-btn btn btn-primary" action="{%  url 'activate' form_type_name form_id 'D'%}" method="get">
+        <button>Deactivate Form</button>
+    </form>
+    
+
+    <form class="btn btn-primary" action="{%  url 'custom_form' %}" method="get">
+        <input type ="hidden" id="eid" name="eid" value="{{ athlete.eid }}">
+        <input type ="hidden" id="ccyy" name="ccyy" value="{{ ccyy }}">
+        <input type ="hidden" id="semester" name="semester" value="{{ semester }}">
+        <input type ="hidden" id="additional" name="additional" value="True">
+        <input type ="submit" id="eid_ccyys_submit" name="eid_ccyys_submit" value="Create Additional Percent Form">
+    </form>
+    
+    {% endif %}
+
+{% endblock %}

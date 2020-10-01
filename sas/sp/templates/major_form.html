@@ -1,0 +1,9 @@
+{% load crispy_forms_tags %}
+
+{% if users_turn and user_type == 'R' and return_recipient == 'Athletic Student Services' or users_turn and user_type == 'A' and not return_recipient %} 
+  {% crispy major_form major_form.helper %}
+{% else %}
+  <p>College: {{ school }}</p>
+  <p>Major: {{ major_desc }} </p>
+  {% crispy major_form major_form.helper %}
+{% endif %}    	    	

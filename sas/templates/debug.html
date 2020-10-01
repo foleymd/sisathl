@@ -1,0 +1,20 @@
+<h3>META: </h3>
+<dl>
+    {{pda_meta_dict.envo }}
+</dl>
+
+<h3>PDA RECEIVE FIELDS: </h3>
+<dl>
+    {% for key, value in pda_recv_dict.items %}
+    <dt>{{ key }}</dt>
+    <dd>{{ value }}</dt>
+    {% endfor %}
+</dl>
+
+<h3>PDA SEND FIELDS: </h3>
+<dl>
+    {% for key, value in pda_send_dict.items %}
+    <dt>{{ key }}</dt>
+    <dd>{{ value }}</dt>
+    {% endfor %}
+</dl>

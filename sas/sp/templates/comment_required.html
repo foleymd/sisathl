@@ -1,0 +1,27 @@
+{% extends "spd_base.html" %}
+
+{% block title %}A comment is required{% endblock %}
+
+{% block content %}
+
+{% if add_comment_form.errors %}
+        <div class="alert alert-{{ message.tags }}">
+          Please correct the error {{ add_comment_form.errors|pluralize }} below.
+        </div>
+
+{% endif %}
+
+	<div id="required_comments" class="comments_container">
+		{% include 'comments.html' %}
+	</div>
+ <script  language="Javascript" type="text/Javascript">
+ $(document).ready(function(){
+	// if this is the required comments, we don't need ajax!!!
+	$('#required_comments').on('click', 'a.comment_action', function(e){ 
+		e.preventDefault();
+		$('#comments_form').submit();
+	});
+}); /* end document-ready */ 
+</script>
+	
+{% endblock %}

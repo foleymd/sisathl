@@ -1,0 +1,23 @@
+{% extends "compliance_base.html" %}
+
+{% block title %}Compliance Forms Admin{% endblock %}
+
+{% block inner_header %}
+Create Student List
+{% endblock %}
+
+{% block content %}
+{% if panel_loaded %}
+    <p>Students have already been loaded for the academic year of {{ academic_year }}. You can choose
+        to update the student list if desired, which will add new students and update student info such
+        as their age, address, and sports.</p>
+{% else %}
+      <p>The student list for {{ academic_year }} has not yet been created.</p>
+{% endif %}
+
+<form id = "create_panel" action = "{% url 'create_panel' %}" method="get">
+    <input type="hidden" value="{{ fall_ccyys }}" name="fall_ccyys"/>
+  	<input type ="submit" name="panel_creation_request" value="Generate or update student list">
+</form>
+
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "spd_base.html" %}
+
+{% block title %}Athletics Eligibility Certification Home{% endblock %}
+
+{% block content %}
+
+<div class="absolute">
+
+{% include "header_search.html" %}
+
+<div class="clear dates">
+<h4>System Open and Close Dates</h4>
+<table id="date_table" class="small_table">
+<thead>
+    <tr>
+        <th id="admin_ccyys">Semester</th>
+        <th id="athletics_open">Athletics Open</th>
+        <th id="athletics_close">Athletics Close</th>
+        <th id="dean_open">Colleges Open</th>
+        <th id="dean_close">Colleges Close</th>
+        <th id="reg_open">Registrar Open</th>
+        <th id="reg_close">Registrar Close</th>
+    </tr>
+</thead>
+
+
+    <tbody>
+
+        {% for ccyys in ccyys_admin_all %}
+            <tr>
+                <td headers="admin_ccyys">{{ ccyys.display_ccyys }}</td>
+                <td headers="athletics_open">{{ ccyys.athletics_open_date }}</td>
+                <td headers="athletics_close">{{ ccyys.athletics_close_date  }}</td>
+                <td headers="dean_open">{{ ccyys.dean_open_date }}</td>
+                <td headers="dean_close">{{ ccyys.dean_close_date }}</td>
+                <td headers="reg_open">{{ ccyys.reg_open_date }}</td>
+                <td headers="reg_close">{{ ccyys.reg_close_date }}</td>
+
+            </tr>
+
+        {% endfor %}
+
+
+    </tbody>
+
+</table>
+
+</div><!-- clear dates -->
+
+</div>
+  
+  
+
+{% endblock %}

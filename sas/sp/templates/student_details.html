@@ -1,0 +1,114 @@
+
+{% extends "spd_base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}Student Details{% endblock %}
+
+
+
+{% block content %}
+
+<div class="absolute">
+<div class="tabbed-area">
+
+	<ul class="tabs group">
+	    
+	    {% if major.athlete_ccyys_admin.status != 'Form Inactive' %}
+            <li>
+                <a {% if form_type_name == 'SPD' %}id="active-tab"{% endif %} href="{% url 'student_details' major_id=major.id %}">Satisfactory Progress</a>
+            </li>
+        {% elif major.athlete_ccyys_admin.status == 'Form Inactive' and user_type == 'A' %}
+            <li>
+                <a href="{%  url 'activate' 'SPD' major.athlete_ccyys_admin.id 'A'%}">Inactive Satisfactory Progress</a>
+            </li>
+        {% endif %}
+	    
+	    {% if major.percent_degree.status != 'Form Inactive' %}
+            <li>
+                <a {% if form_type_name == 'PERCENT_DEGREE'  %} id="active-tab"{% endif %} href="{% url 'percentage_of_degree' major_id=major.id %}">Percentage of Degree</a>
+
+            </li>
+        {% elif major.percent_degree.status == 'Form Inactive' and user_type == 'A' %}
+            <li>
+                <a href="{%  url 'activate' 'PERCENT_DEGREE' major.percent_degree.id 'A'%}">Inactive Percentage of Degree</a>
+            </li>
+        {% endif %}
+	</ul>
+
+</div>
+
+<div class="tabs-box">
+
+
+{% block form %}{% endblock %}
+
+
+
+		<div class="">
+
+	
+			<div class="routing"><h4>Routing Information</h4>
+			    <div>Created By: {{ signature_info.created_by }} {{ signature_info.created_by_date|date:"m/d/Y P" }}</div>
+			    <div>Routed to Dean By: {{ signature_info.routed_to_dean_by }} {{ signature_info.routed_to_dean_by_date|date:"m/d/Y P" }}</div>
+			    <div>Approved By Dean's Designee: {{ signature_info.approved_by_dean }} {{ signature_info.approved_by_dean_date|date:"m/d/Y P" }}</div>
+			    <div>Routed To Registrar By: {{ signature_info.routed_to_reg_by }} {{ signature_info.routed_to_reg_by_date|date:"m/d/Y P" }}</div>
+			    <div>Approved By Registrar's Designee: {{ signature_info.approved_by_reg }} {{ signature_info.approved_by_reg_date|date:"m/d/Y P" }}</div>
+
+			
+		    <div class="instructions_link">
+			   <a onclick="open_instructions()">Instructions</a>
+			</div>
+			<div class="contact">
+			   <a onclick="contact_form()">Questions or Comments</a>
+			</div>
+			
+			<div class="print">
+				<button type="button" class="btn btn-default" onclick="window.print()">Print</button>
+			</div>
+			</div>
+		
+			<div id="comments" class="comments_container"
+                    {%  if not users_turn %}style="width:350px"{% endif %}>
+				{% include 'comments.html' %}
+			</div>
+
+		</div>
+
+
+<div id="form_type_name" class="invisible">{{ form_type_name }}</div>
+<div id="form_id" class="invisible">{{ form_id }}</div>
+ <script  language="Javascript" type="text/Javascript">
+	/***************SCHOOL / MAJOR DROPDOWN *************************/
+	// When the school is changed, get the new majors
+	$(document).on("change", '#id_school', (function(e) {
+
+        // gather all the data filled out on the form so far:
+        data = {
+                'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+				'school': $('#id_school').val(),
+                'minor': $('#id_minor').val(),
+                'catalog_end': $('#id_catalog_end').val(),
+                'catalog_begin': $('#id_catalog_begin').val()
+             };
+
+		// send all the form data filled in so far
+		$.ajax({
+			type: 'POST',
+			url: '{{ this_url }}',
+			data: data,
+			dataType: 'html',
+			complete: function(data) {
+                $('#major_form').html(data.responseText);
+			} /* complete */
+		}); /* ajax call */
+	}));
+</script>
+<script  language="Javascript" type="text/Javascript" src="{% static 'spd_form/js/forms.js' %}"></script>
+{% if form_type == 'SPD' %}
+<script  language="Javascript" type="text/Javascript" src="{% static 'spd_form/js/spd_form.js' %}"></script>   
+{% endif %}
+
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "student_base.html" %}
+
+{% block title %}Compliance Forms for {{ academic_year }}{% endblock %}
+
+
+{% block content %}
+    {% if surveys %}
+<p>Here are the forms required for the academic year {{ academic_year }}.
+<ul>
+{% for survey in surveys %}
+   <li><a href="{{ survey.link }}" target="_blank">{{ survey.name }}</a></li>
+{% endfor %}
+</ul>
+</p>
+
+    {% else %}
+<p>Forms are not yet ready for the academic year{% if academic_year %} {{ academic_year }}{% endif %}.</p>
+{% endif %}
+{% endblock %}

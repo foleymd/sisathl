@@ -1,0 +1,29 @@
+{% extends "spd_base.html" %}
+
+{% block title %}Reactivate {{ form_type_display }} for {{ athlete_name }}{% endblock %}
+
+{% block content %}
+
+    {%  if action == 'A' %}
+    <p>Do you want to activate the {{ form_type_display }} form for
+        {{ athlete_name }}?</p>
+
+    <a href="{%  url 'activate' form_type_name form_id 'A'%}?submit=True">
+        <button class="btn btn-primary">Activate Form</button>
+    </a>
+    {%  endif %}
+
+    {%  if action == 'D' %}
+    <p>Do you want to delete the {{ form_type_display }} form for
+        {{ athlete_name }}?</p>
+
+    <a href="{%  url 'activate' form_type_name form_id 'D'%}?submit=True">
+        <button class="btn btn-primary">Deactivate Form</button>
+    </a>
+    {%  endif %}
+
+    <a href="{% url 'inbox' %}">
+        <button class="btn btn-default">Return to Inbox</button>
+    </a>
+
+{% endblock %}

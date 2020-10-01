@@ -1,0 +1,55 @@
+{% extends "spd_base.html" %}
+{% load static from staticfiles %}
+
+{% block title %}Log{% endblock %}
+
+{% block inner_header %}<h3>Change Log for {{ display_title }}</h3>{% endblock %}
+
+{% block content %}
+
+{% include 'log_search.html' %}
+
+{% include 'log_pagination.html' %}
+
+<table id="log_table" class="large-table">
+
+    <thead>        
+        <tr>
+            <th scope="col"><span class="table-head">Ccyys</span></th>
+            <th scope="col"><span class="table-head">Student</span></th>
+            <th scope="col"><span class="table-head">Student EID</span></th>
+            <th scope="col"><span class="table-head">Date/Time</span></th>
+            <th scope="col"><span class="table-head">Updated By</span></th>
+            <th scope="col"></th>
+        </tr>        
+    </thead>
+    
+    <tbody>               
+        {% for record in log_records %}
+            <tr>         
+                <td id="record_ccyys_{{ record.id }}">{{ record.ccyys }}</td>
+                <td id="record_student_name_{{ record.id }}">{{ record.student_name }}</td>
+                <td id="record_student_{{ record.id }}">{{ record.student }}</td>
+                <td id="record_date_{{ record.id }}">{{ record.date }}</td>
+                <td id="record_updated_by_{{ record.id }}">{{ record.updated_by }}</td>
+                <td><a onclick="open_log_details({{ record.id }})">View Changes</a></td>
+            </tr>
+        {% endfor %}                                            
+    </tbody>
+</table>
+
+
+{% include 'log_pagination.html' %}
+
+<script  language="Javascript" type="text/Javascript">
+
+
+    function open_log_details(record_id) {
+    url = '{% url 'log_record' %}' + '?record_id=' + record_id
+    mywindow = window.open(url, "log_window",
+             "location=right, scrollbars=yes,width=1200,height=850");
+    mywindow.moveTo(0,0);
+}
+    </script>
+{% endblock %}
+         

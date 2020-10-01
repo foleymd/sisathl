@@ -1,0 +1,16 @@
+{% extends "utd_base.html" %}
+
+{% block content %}
+
+
+<p class="error">There has been an error.</p>
+<p>Please check your data and try again.</p>
+
+<div class="error">{{error_msg}} (Error Code: {{error_code}} )</div>
+
+{% if recv.debug_sw %}
+  {% include 'debug.html' %}
+{% endif %}
+
+{% endblock %}
+

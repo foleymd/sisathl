@@ -1,0 +1,74 @@
+{% extends "spd_base.html" %}
+{% load static %}
+
+{% block title %}Create Custom Forms{% endblock %}
+
+{% block content %}
+<h2>Create Custom Forms</h2>
+
+{% if form.errors %}
+	    <p style="color: red;">
+	    Please correct the errors below:</p>
+			<ul  style="color: red;">
+                {%  for error in form.non_field_errors %}
+                    <li>{{ error|striptags }}</li>
+                {% endfor %}
+				{% for field in form %}
+					{% if field.errors %}<li>{{ field.label }}: {{ field.errors|striptags }}</li>{% endif %}
+				{% endfor %}
+			</ul>
+{% endif %}
+<div id="form">
+{%  include 'custom_form.html' %}
+</div>
+
+{% include 'footer.html' %}
+
+ <script type="text/Javascript">
+$(document).ready(function(){
+	// When the school is changed, get the new majors
+	$(document).on("change", '#id_school', (function(e) {
+
+        // gather all the data filled out on the form so far:
+        data = {
+                'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+				'school': $('#id_school').val(),
+                'eid': $('#id_eid').val(),
+                'name': $('#id_name').val(),
+                'ccyy': $('#id_ccyy').val(),
+                'semester': $('#id_semester').val(),
+                'num_ft_semesters': $('#id_num_ft_semesters').val(),
+                'catalog_begin': $('#id_catalog_begin').val(),
+                'catalog_end': $('#id_catalog_end').val(),
+                'minor': $('#id_minor').val(),
+                'sport_1': $('#id_sport_1').val(),
+                'sport_2': $('#id_sport_2').val(),
+                'sport_3': $('#id_sport_3').val(),
+             }
+        // if the booleans appear in the data at all, Django interprets it as 'True',
+        // so for those we only add them to the data packet if they are true.
+        if ($('#id_spd_form').is(':checked')) {
+            data['spd_form'] = $('#id_spd_form').val();
+        }
+        if ($('#id_percent_form').is(':checked')) {
+            data['percent_form'] = $('#id_percent_form').val();
+        }
+
+		// send all the form data filled in so far
+		$.ajax({
+			type: 'POST',
+			url: '/apps/sisathl/sas/sp/custom_forms/',
+			data: data,
+			dataType: 'html',
+			complete: function(data) {
+                $('#form').html(data.responseText);
+			} /* complete */
+		}) /* ajax call */
+	}));
+
+}); /* end document-ready */
+</script>
+
+
+
+{% endblock %}

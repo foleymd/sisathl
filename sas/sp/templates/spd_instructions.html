@@ -1,0 +1,96 @@
+{% load static from staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<link href="{% static "spd_form/css/main.min.css" %}" rel="stylesheet" />
+
+<title>Send a comment</title>
+</head>
+
+<body class="popup_container">
+<div class="container">
+
+    <div class="popup"><div class="popup popup_inner">
+        <h1>Athletics Eligibility Certification Instructions</h1>
+        <h2><a name="#inbox" class="anchor-only">Inbox</a></h2>
+        <p>Satisfactory Progress (SP) and Percentage of Degree (PD) forms
+            are classified according to their status in the system.</p>
+        <dl>
+            <dt>Form created:</dt>
+            <dd>Athletic Student Services has generated the forms for this
+                semester and is reviewing the major and course info before
+                sending it to the colleges.</dd>
+            <dt>Needs college attention:</dt>
+            <dd>It is the College's (or designees' )turn to verify either
+                verify the courses on the SP form or to calculate a
+                percentage of degree on the PD form.</dd>
+            <dt>Approved by college:</dt>
+            <dd>The College (or designee) has signed off on the form and
+                Athletic Student Services is reviewing the changes.</dd>
+            <dt>Requires Registrar approval:</dt>
+            <dd>It is the Registrar's (or designee's) turn to verify the
+                courses and grades on the form and sign off.</dd>
+            <dt>Complete:</dt>
+            <dd>The form has been signed off by Athletic Student Serviecs,
+                the College, and the Registrar's Office.</dd>
+            <dt>Form inactive:</dt>
+            <dd>That form for that student/major combination will not be
+                used that semester. The student may have another form of the
+                same type listed under a different major.</dd>
+        </dl>
+
+        <h2><a name="spd" class="anchor-only">Satisfactory Progress Form</a></h2>
+        <p>INSTRUCTIONS: The Athletic Student Services staff in the Athletics Department will provide forms with
+        Field of Study, Course Number, Unique, and Credit Hours for a given semester. The Colleges (or 
+        designees) are responsible for completing the Countable, Min. Grade Required, and Pass/Fail 
+        Accepted columns. The Registrar (or designee) is responsible for verifying that the 
+        listed major/minor is consistent with the student's official record. After final grades post, 
+        the Registrar is responsible for verifying completed coursework, final grades, and total 
+        countable degree hours.</p>
+
+        <p><strong>(ATHLETIC STUDENT SERVICES)</strong> Verify student's current major, minor, catalog, coursework, 
+        and credit hours. Can also delete/inactive the form as needed.</p>
+        <p><strong>(COLLEGES)</strong> Indicate if the course counts toward the major/minor listed
+        upon successful completion of the coursework. Answer yes if the course is countable and no if it 
+        is not.</p> 
+        <p><strong>(COLLEGES)</strong> If there is a minimum grade required for the course to count toward the student's degree, 
+        indicate the minimum grade required using the letter grades (B-, C, C-, D, etc.) provided in the 
+        dropdown box.</p>
+        <p><strong>(COLLEGES)</strong> If the course is being taken on a pass/fail basis, indicate if a pass counts toward 
+        the degree. Answer yes if a pass counts and no if it does not.</p>
+        <p><strong>(REGISTRAR)</strong> Certify the final grade at the end of the semester.</p>
+        <p><strong>(REGISTRAR)</strong> Certify the final hours for each class successfully
+        completed.</p>
+        <p><strong>(REGISTRAR)</strong> Certify total countable degree hours for the semester.</p>
+
+        <h2><a name="pd" class="anchor-only">Fulfillment of Percentage of Degree Requirements</a></h2>
+        <p>INSTRUCTIONS: The Athletic Student Services staff in the Athletics Department will provide forms with
+        major information. The Colleges (or designees) are responsible for the projected countable hours and
+        total hours required fields. A degree audit is run in advance and  the field is prepopulated,
+        but the Colleges (or designees) can alter the hours if the degree audit is not inclusive of all a student's work.
+        The projected percentage will be calculated. The Registrar (or designee) is responsible for
+        verifying that the listed major/minor is consistent with the student's official record. </p>
+
+        <p><strong>(ATHLETIC STUDENT SERVICES)</strong> Verify student's
+            current major, minor, and catalog.  Can also delete/inactive the
+            form as needed,or create an additional form for a different major.</p>
+        <p><strong>(COLLEGES)</strong> Enter and verify the projected countable hours required for the student's degree. </p>
+        <p><strong>(COLLEGES)</strong> Enter and verify the total hours required for the student's degree.</p>
+        <p><strong>(REGISTRAR)</strong> Certify the projected countable hours, total hours required, and projected percentage at the end of the semester.</p>
+
+        <h2><a name="users" class="anchor-only">Manage Users</a></h2>
+        <p>INSTRUCTIONS: The Athletic Student Services staff and
+            Registrar's staff can authorize new users for the system and
+            remove users.</p>
+
+        <p>To <strong>add a user</strong>, enter an EID into the form at the
+            top of the page. If the user in a College, the school must also
+            be selected.</p>
+        <p>To <strong>remove a user</strong>, unselect the 'active' button
+            in the row with the user's name and hit 'Update'.</p>
+    </div></div>
+
+</body>
+</html>

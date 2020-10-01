@@ -1,0 +1,58 @@
+{{ utd_header }}
+
+{% if recv.return_code != '' %}
+  <p class="error">
+    {{recv.return_msg}} ({{recv.return_code}})
+  </p>
+{% else %}
+  <p>
+    {{ text }}
+  </p>
+  
+  <script type="text/javascript">
+  function gotoACS() {
+    var f = document.acs_portal;
+    f.submit();
+  }
+  </script>
+  
+  <form name="acs_portal" id="acs_portal" action="https://incontrol.acsathletics.com/TeamManager/PublicPortal/SecureLogin.aspx" method="post">
+    <!-- UIN here is actually the NCAA ID. -->
+    <input type="hidden" name="UIN" value="{{recv.ncaa_id}}" />
+    <input type="hidden" name="OrgID" value="83" />
+    <input type="hidden" name="Key" value="{{recv.acs_hash}}" />
+  </form>
+  
+  <ul>
+    <li>
+      <div class="list_link">
+        <a href="https://utdirect.utexas.edu/nrath/nrath-comp/index.WBX">Compliance Forms</a> 
+      </div>
+      <div class="list_content">
+        These forms must be completed prior to your participation in any practice or competition with your sport each academic year. You are only required to complete these forms once per year.
+      </div>
+    </li>
+
+    <li>
+      <div class="list_link">
+        <a href="javascript:gotoACS();">Student-Athlete Complimentary Tickets for Home and Away Games</a>
+      </div>
+      <div class="list_content">
+       Student-athletes participating in Football, Basketball, Baseball, Soccer, Softball and Volleyball will use this system to request complimentary tickets to home and away games in their sport.
+      </div>
+    </li>
+
+    <li>
+      <div class="list_link">
+        <a href="https://sis-workflow.ath.utexas.edu/Registration?PartnerId=1&sso_token={{recv.med_hash}}&sso_ID={{recv.ncaa_id}}&sso_timestamp={{recv.timestamp}}">Sports Medicine Forms</a>
+      </div>
+    </li>
+  </ul>
+
+{% endif %}
+
+{% if recv.debug_sw = 'Y' %}
+  {% include 'debug.html' %}
+{% endif %}
+  
+{{ utd_footer }} 

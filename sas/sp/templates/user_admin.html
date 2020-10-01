@@ -1,0 +1,126 @@
+{% extends "spd_base.html" %}
+
+{% block title %}Manage Users{% endblock %}
+
+{% block content %}
+
+
+
+<div class="user-block">
+<div class="form-inline search">
+<h4>Search by EID:</h4>
+
+    <form method="get" action="{% url 'user_admin' %}">
+
+    <label for="search_eid">EID</label>
+    <input name="search_eid" id="search_eid" size="8" maxlength="8" type="text" value="{{ search_eid|default:"" }}"/>
+    <input type="submit" value="Submit">
+</form>
+</div>
+<div class="form-inline search">
+<h4>Search by College:</h4>
+
+<form method="get" action="{% url 'user_admin' %}">
+
+    <label for="search_school">College</label>
+    <select name="search_school" id="search_school">
+        {% for school in school_choices %}
+            <option value="{{ school.0 }}" {% if school.0 == search_school %}selected{% endif %}>{{ school.1 }}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="Submit">
+</form>
+</div>
+
+<h2 class="clear">Add new user:</h2>
+
+{% if add_user_form.errors %}
+	    <p style="color: red;">
+	    Please correct the errors below:</p>
+			<ul  style="color: red;">
+                {%  for error in add_user_form.non_field_errors %}
+                    <li>{{ error|striptags }}</li>
+                {% endfor %}
+				{% for field in add_user_form %}
+					{% if field.errors %}<li>{{ field.label }}: {{ field.errors.0|striptags }}</li>{% endif %}
+				{% endfor %}
+			</ul>
+{% endif %}
+
+<form action="{% url 'user_admin' %}" method="POST">
+	{% csrf_token %}
+	{% for field in add_user_form %}
+	    {% if field.label == 'Eid' %}
+	        <span class="add-user-col">{{ field.label|upper }} {{field}} </span>
+	    {% else %}    
+	        <span class="add-user-col">{{ field.label|capfirst }} {{field}} </span>
+	    {% endif %}    
+	{% endfor %}
+	<input type="submit" name="add_user" value="Add" class="add-user-btn"/>
+</form>
+
+<h2>Update or remove existing users:</h2>
+
+
+<form action="{% url 'user_admin' %}" method="POST">
+    {% csrf_token %}
+    {{ update_forms.management_form }}
+    <div class="user-table">
+        {% for form in update_forms.forms %}
+        	{% if forloop.first %}
+                {% for field in form.visible_fields %}
+                	{% if field.label == 'Eid' %}
+	                    <span class="user-header user-col-{{ forloop.counter }}">{{ field.label|upper }}</span> 
+	    			{% else %}    
+	        			<span class="user-header user-col-{{ forloop.counter }}">{{ field.label|capfirst }}</span> 
+	    			{% endif %} 
+                {% endfor %}                          	
+        	{% endif %}
+            {% if form.errors %}
+                {%  for error in form.non_field_errors %}
+                <div class="user-row form-errors">
+                    {{ error|striptags }}
+                </div>
+                {% endfor %}
+                {% for field in form %}{% if field.errors %}
+                <div class="user-row form-errors">
+                    {{ field.label }}: {{ field.errors.0|striptags }}
+                </div>{% endif %}
+                {% endfor %}
+            {% endif %}
+        	{{ form.id }}
+        	{% if forloop.counter|divisibleby:2 %}<div class="user-even-row">{% endif %}
+        		<div class="user-row">
+            		{% for field in form.visible_fields %}  
+            			{{ field.errors.as_ul }}
+      					<span class = "user-col-{{ forloop.counter }}">{{ field }}</span> 
+        			{% endfor %}
+        		</div>
+        	{% if forloop.counter|divisibleby:2 %}</div>{% endif %}
+  			  <!-- this causes an html validation error {% for hidden in form.hidden_fields %}
+            	{{ hidden }}
+			{% endfor %}  --> 
+    	{% endfor %}
+	</div>    
+    <input class= "clear float-left" type="submit" name="update_user" value="Update" />
+</form>
+
+<div class="clear float-left pagination">
+   <span class="step-links">
+       {% if objects.has_previous %}
+          <a href="?page={{ objects.previous_page_number }}">Previous</a>
+       {% endif %}
+
+       <span class="current">
+          Page {{ objects.number }} of {{ objects.paginator.num_pages }}
+       </span>
+
+       {% if objects.has_next %}
+          <a href="?page={{ objects.next_page_number }}">next</a>
+       {% endif %}
+   </span>
+</div>
+{% include 'footer.html' %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends "spd_base.html" %}
+{% load static from staticfiles %}
+
+{% block title %}Manage Dates{% endblock %}
+
+{% block content %}
+<link href="{% static 'spd_form/css/datepicker.min.css' %}" rel="stylesheet" property="stylesheet" />
+
+<div class="search form-inline">
+<h3>Go to Semester:</h3>
+<form method="get" action="{% url 'ccyys_admin' %}">
+
+        <label for="form_s">Semester</label>
+        <select name="form_s" id="form_s">
+            <option value="" {% if current_s == 0 %}
+                selected="selected"{% endif %}>&nbsp;</option>
+            <option value="9" {% if current_s == 9 %}
+                selected="selected"{% endif %}>Fall</option>
+            <option value="2" {% if current_s == 2 %}
+                selected="selected"{% endif %}>Spring</option>
+            <option value="6" {% if current_s == 6 %}
+                selected="selected"{% endif %}>Summer</option>
+        </select>
+
+        <label for="form_ccyy">Year</label>
+        <select name="form_ccyy" id="form_ccyy" size="1">
+            <option value="">&nbsp;</option>
+
+            {% for year in YEARS %}
+                <option value="{{ year }}"
+                    {% if current_ccyy = year %}
+                    selected="selected"{% endif %}>{{ year }}
+                </option>
+            {% endfor %}
+
+
+        </select>
+
+
+    <input type="hidden" name="inbox_submitted" id="inbox_submitted" value="True">
+    <input type="submit" value="Submit">
+</form>
+</div>
+
+<div class="clear"><h2>Update access dates for {{ display_ccyys }}:</h2></div>
+<div class="container">
+	
+	{% if form.errors %}
+	    <p style="color: red;">
+	    Please correct the errors below:
+	    {{ form.errors }} 
+	    {{ form.non_field_errors }}
+	    </p>
+	{% endif %}
+	
+<form action="{% url 'ccyys_admin' %}" method="POST">
+  {% csrf_token %}
+     {% for field in form %}
+     	<div>
+            {% if field.label != 'Ccyys' %}
+	     	    <label for="id_{{ field.name }}">{{ field.label }}</label>
+            {% endif %}
+	     	<div class="input-append date datepicker_input" data-date="{{ field.value|date:"m-d-o" }}" data-date-format="mm-dd-yyyy">
+	     		{{ field }}
+            {%  if field.label != 'Ccyys' %}
+                    <span class="add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+                {%  endif %}
+	     	</div><br/>
+     	</div>
+     {% endfor %}
+  <input type="submit" name="update_ccyys_admin" value="Update" class="btn btn-default"/>
+</form>
+{% include 'footer.html' %}
+
+</div>
+
+<script type="text/Javascript" src="{% static 'spd_form/js/bootstrap-datepicker.js' %}"></script>   
+<script type="text/Javascript">
+$(document).ready(function(){
+ 	 $('.datepicker_input').datepicker('hide')
+}); 
+</script>
+{% endblock %}

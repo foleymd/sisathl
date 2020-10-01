@@ -1,0 +1,33 @@
+{% extends base_template %}
+
+{% block content %}
+
+<div id="sis_ferpa_display">
+	<h2>{{ ferpa.default_header }}</h2>
+	<p>{{ ferpa.default_status_msg }}</p>
+	
+	{% if ferpa.compliance_flag = 'W' or ferpa.compliance_flag = 'G' %}
+	
+		<form id="sis_ferpa_display_form" action="">
+		  <p><input type="submit" value="Continue" /></p>
+		</form>
+	
+	{% endif %}
+	
+	<p>
+	  {{ ferpa.default_cts_course_msg }}
+	  <a href="{{ ferpa.cts_course_link }}">
+	    {{ ferpa.cts_course }}.
+	  </a>
+	</p>
+	<p>
+	  {{ ferpa.default_contact_msg }}
+	  <ul>
+	    <li>{{ ferpa.contact_name }}</li>
+	    <li>{{ ferpa.contact_number }}</li>
+	    <li>{{ ferpa.contact_email }}</li>
+	  </ul>
+	</p>
+
+</div>
+{% endblock %}

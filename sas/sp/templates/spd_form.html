@@ -1,0 +1,179 @@
+{% extends "student_details.html" %}
+{% load crispy_forms_tags %}
+
+
+<div class="inner_header">
+{% block inner_header %}
+<h2>Satisfactory Progress Toward Degree</h2>
+<h3>(NCAA Bylaw 14.4.3.1)</h3>
+{% include 'ferpa_banner.html' %}
+
+{% if athlete_ccyys_admin.approved_by_reg %}
+    <div class="alert alert-success">
+          Certification has been completed for {{ athlete.eid }}.
+    </div>
+{% endif %}
+{% endblock %}
+</div>
+
+<div class="form">
+{% block form %}
+
+{% if form.errors %}
+    <p style="color: red;">
+    Please correct the error {{ form.errors|pluralize }} below.
+    </p>
+{% endif %}
+
+{% include "static_student_details.html" %}
+{% include "static_coursework.html" %}
+
+<form action="{% url 'student_details' major_id=major.id %}" method="post">{% csrf_token %}
+
+<div class="college_major">
+	<h3>College/Major Info</h3> 
+
+	{% if major_form.errors %}
+	    <p style="color: red;">
+	    Please correct the errors below:
+        {{ major_form.non_field_errors }}</p>
+			<ul style="color: red;">
+				{% for field in major_form %}
+					{% if field.errors %}<li>{{ field.label }}: {{ field.errors|striptags }}</li>{% endif %}
+				{% endfor %}
+			</ul>
+	{% endif %}
+	
+    <div class="form-inline" id="major_form">
+        {% include 'major_form.html' %}
+    </div>
+
+</div>
+
+<div class="spd_coursework">
+	<h3>Current Classroom Coursework</h3>  
+	    
+		{{ course_formset.management_form }}
+    {% if course_formset.total_error_count > 0 %}
+	    <p style="color: red;">
+	    Please correct the errors below:</p>
+            {% for form in course_formset %}
+			<ul  style="color: red;">
+                {%  for error in form.non_field_errors %}
+                    <li>{{ error|striptags }}</li>
+                {% endfor %}
+				{% for field in form %}
+					{% if field.errors %}<li>{{ field.label }}: {{ field.errors|striptags }}</li>{% endif %}
+				{% endfor %}
+			</ul>{%  endfor %}
+	{% endif %}
+        {% for form in course_formset %}
+        	{% if forloop.first %}
+        	    <div class="course-header">
+                    {% for field in form.visible_fields %}
+                        <span class = "course-header col-{{ forloop.counter }}">{{ field.label|capfirst }}</span> 
+                    {% endfor %}    
+                </div>                         	
+        	{% endif %}
+        	
+        	<div>   
+        	{% if forloop.counter|divisibleby:2 %}<div class="course-even-row">{% endif %} 
+                {% for field in form.visible_fields %}
+      			    <span class = "col-a-{{ forloop.counter }}">
+      			        {{ field }}
+      			    </span>
+  		        {% endfor %}
+
+  		        {% for hidden in form.hidden_fields %}
+                    {{ hidden }}
+			    {% endfor %}  
+			{% if forloop.counter|divisibleby:2 %}</div>{% endif %}         		
+  			</div>
+  			
+  		{% empty %}  		
+  		    <h4> No current classroom coursework recorded. </h4>	 
+    	{% endfor %}
+
+</div>
+
+<div class= "additional_coursework">
+<h3> Transfer, CBE, or Extension-Online Coursework</h3> 
+
+        {{ additional_course_formset.management_form }}
+        {% if additional_course_formset.total_error_count > 0 %}
+                <p style="color: red;">
+                Please correct the errors below:</p>
+                    {% for form in additional_course_formset %}
+                    <ul style="color: red;">
+                    {%  for error in form.non_field_errors %}
+                    <li>{{ error|striptags }}</li>
+                {% endfor %}
+                        {% for field in form %}
+                            {% if field.errors %}<li>{{ field.label }}: {{ field.errors|striptags }}</li>{% endif %}
+                        {% endfor %}
+                    </ul>{%  endfor %}
+            {% endif %}
+        {% for form in additional_course_formset %}
+        	{% if forloop.first %}
+        	    <div>
+                    {% for field in form.visible_fields %}
+                        <span class = "col-{{ forloop.counter }}">{{ field.label|capfirst }}</span> 
+                    {% endfor %}    
+                </div>                         	
+        	{% endif %}
+        	
+        	<div>    
+                {% for field in form.visible_fields %}  
+      			    <span class = "col-a-{{ forloop.counter }}">
+      			        {{ field }}
+      			    </span>  			 
+  		        {% endfor %}
+  		    
+  		        {% for hidden in form.hidden_fields %}
+                    {{ hidden }}
+			    {% endfor %}       		
+  			</div>
+  		{% empty %}  		
+  		    <h4> No Transfer, CBE, or Extension-Online coursework recorded. </h4>	
+    	{% endfor %}
+
+</div>	
+
+<div class="countable_hours">
+<div class="clear"><h4>Countable Hours</h4></div>
+<div class="clear">Hours Undertaken: <span id="hours_undertaken">{{ athlete_ccyys_admin.total_possible_countable_degree_hours }}</span></div>  
+<div>Projected Countable Degree Hours: <span id="projected_countable_hours">{{ athlete_ccyys_admin.total_projected_degree_hours }}</span></div>
+<div>Total Countable Degree Hours: <span id="total_countable_hours">{{ athlete_ccyys_admin.total_countable_degree_hours }}</span></div>
+
+</div>
+    
+{% if users_turn %}                    
+    <div class="form-actions">
+        {% if athlete_ccyys_admin.approved_by_reg %}
+            <input type="submit" name="return" value="Recall Certification" class="btn btn-primary save-submit-btn" id="submit-return">
+	    {% elif return_recipient %}
+		    <input type="submit" name="return" value="Return to {{ return_recipient }}" class="btn btn-primary save-submit-btn" id="submit-return">
+	    {% endif %}
+	    {% if not athlete_ccyys_admin.approved_by_reg  %}
+        	<input type="submit" name="submit" value="Save" class="btn btn-primary save-submit-btn" id="submit-save">
+        {% endif %}
+    	{% if user_type == 'R' and advance_recipient %}
+    	    <input type="submit" name="sign" value="Sign and certify" class="btn btn-primary save-submit-btn" id="submit-sign">
+    	{% elif advance_recipient %}
+    		<input type="submit" name="sign" value="Sign and send to {{ advance_recipient }}" class="btn btn-primary save-submit-btn" id="submit-sign">
+    	{% endif %}
+	</div>
+{% endif %}      
+
+</form>
+
+    {% if user_type == 'A' and users_turn and not athlete_ccyys_admin.routed_to_dean_by %}
+    <form style="display: inline" class="delete-btn btn btn-primary" action="{%  url 'activate' form_type_name form_id 'D'%}" method="get">
+        <button>Deactivate Form</button>
+    </form>
+    
+    {% endif %}
+
+{% endblock %}
+
+</div>

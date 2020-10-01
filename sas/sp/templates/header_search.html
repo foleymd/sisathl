@@ -1,0 +1,89 @@
+<div class="header-search">
+
+<div class="clear form-inline search">
+<h4>Search by sport and/or semester:</h4>
+
+<form method="get" action="{% url 'inbox' %}">
+
+     <label for="form_s">Semester</label>
+     <select name="form_s" id="form_s">
+         <option value="" {% if current_s == 0 %}
+             selected="selected"{% endif %}>&nbsp;</option>
+         <option value="9" {% if current_s == 9 %}
+             selected="selected"{% endif %}>Fall</option>
+         <option value="2" {% if current_s == 2 %}
+             selected="selected"{% endif %}>Spring</option>
+         <option value="6" {% if current_s == 6 %}
+             selected="selected"{% endif %}>Summer</option>
+     </select>
+
+     <label for="form_ccyy">Year</label>
+     <select name="form_ccyy" id="form_ccyy" size="1">
+        <option value="">&nbsp;</option>
+
+        {% for year in YEARS %}
+             <option value="{{ year }}"
+                {% if current_ccyy == year %}
+                selected="selected"{% endif %}>{{ year }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <label for="sport_code">Sport</label>
+        <select name="sport_code" id="sport_code">
+        <option value="">&nbsp;</option>
+            {% for sport_code, sport_desc in SPORTS.items %}
+                <option value="{{ sport_code }}">
+                    {{ sport_desc }}
+                </option>
+            {% endfor %}
+        </select>
+
+    <input type="submit" value="Submit">
+</form>
+</div>
+
+
+<div class="form-inline search">
+<h4>Search by EID:</h4>
+
+<form method="get" action="{% url 'inbox' %}">
+
+    <label for="input_eid">EID</label> 
+    <input name="eid" id="input_eid" size="8" maxlength="8" type="text"/>
+    <input type="submit" value="Submit">
+</form>
+</div>
+
+
+{% comment %}
+
+<div class="clear form-inline search">
+<h4>Search by form status:</h4>
+
+<form method="get" action="{% url 'inbox' %}">
+
+        <label for="form_type">Form Type</label>
+        <select name="form_type" id="form_type">
+            <option value="">&nbsp;</option>
+            <option value="spd_form">Satisfactory Progress</option>
+            <option value="percent_form">Percent</option>         
+        </select>  
+
+        <label for="status">Status</label>
+        <select name="status" id="status">
+            <option value="">&nbsp;</option>
+            <option value="created">Created</option>
+            <option value="routed_to_dean">Needs College Attention</option>
+            <option value="approved_by_dean">Approved by College</option>
+            <option value="routed_to_reg">Requires Registrar Approval</option>
+            <option value="approved_by_reg">Complete</option>
+            <option value="inactive">Inactive</option>            
+        </select>  
+
+    <input type="submit" value="Submit">
+</form>
+</div>
+
+{% endcomment %}
+</div>

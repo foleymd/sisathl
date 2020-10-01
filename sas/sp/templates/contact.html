@@ -1,0 +1,35 @@
+{% load static from staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head> 
+<link href="{% static "spd_form/css/main.min.css" %}" rel="stylesheet" />
+
+<title>Send a comment</title>
+</head>
+
+<body>
+<div class="container popup_container">
+<div>{% include "content_messages.html" %}</div>
+
+<div class="popup">
+    <form class="popup popup_inner" action="{% url 'contact' %}" method="post">
+          {% csrf_token %}
+    <h1>Send a question or comment</h1>
+
+            {% for field in form %}
+                <p>
+              <label for="email">{{ field.label }}</label>
+              	{{ field }}
+                </p>
+    		{% endfor %}
+
+                <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+
+          </form>
+</div><!--popup_form -->
+
+
+</body>
+</html>

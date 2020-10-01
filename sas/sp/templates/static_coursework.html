@@ -1,0 +1,59 @@
+<div class="current_coursework"> 
+{% if has_coursework %}
+    {% if athlete_ccyys.ccyys == current_ccyys_int %}
+      <h3>Coursework as of {% now "F j, Y" %}</h3>
+    {% else %}
+      <h3>Coursework as of {{ last_day }}</h3>
+    {% endif %}
+
+
+<table>
+    <thead>        
+        <tr>
+            <th id="course_category_s">Field of Study</th>
+            <th id="course_number_s">Course Number</th>
+            <th id="unique_s">Unique</th>
+            <th id="credit_hours_s">Credit Hours</th>           	    
+        </tr>        
+    </thead>
+     
+
+    <tbody>               
+
+    {% if athlete_ccyys.ccyys == current_ccyys_int %} 
+       
+        {% for class in classes %}          
+            {% if class.dept_abbr %}
+            <tr>
+              
+                <td headers="course_category_s">{{ class.dept_abbr }}</td>
+                <td headers="course_number_s">{{ class.course_number }}</td>
+                <td headers="unique_s">{{ class.unique }}</td>
+                <td headers="credit_hours_s">{{ class.hours_credit }}</td>
+                                  
+            </tr>
+            {% endif %} 
+        {% endfor %}
+        
+    {% else %}
+    
+        {% for class in final_classes %}
+            {% if class.course_category %}
+            <tr>
+              
+                <td headers="course_category_s">{{ class.course_category }}</td>
+                <td headers="course_number_s">{{ class.course_number }}</td>
+                <td headers="unique_s">{{ class.unique }}</td>
+                <td headers="credit_hours_s">{{ class.credit_hours }}</td>
+                                  
+            </tr>
+            {% endif %} 
+        {% endfor %}
+    {% endif %}                                        
+    </tbody>
+ 
+</table>
+{% else %}
+    <h4>No coursework on file for this student</h4>
+{% endif %}
+</div>

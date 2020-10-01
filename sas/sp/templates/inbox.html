@@ -1,0 +1,145 @@
+{% extends "spd_base.html" %}
+
+{% block title %}Inbox{% endblock %}
+
+{% block inner_header %}
+{% include "header_search.html" %}
+    <div class="clear">
+	<h3>All Forms for {{ inbox_title }}</h3>
+	</div>
+{% endblock %}
+
+{% block content %}
+
+<div class="absolute">
+
+<div class="pagination pagination-bottom">
+    <span class="step-links">  
+        {% if student_majors.has_previous %}
+            <a href="{% url 'inbox' %}?eid={{ eid|default:"" }}&amp;ccyys={{ ccyys|default:"" }}&amp;sport_code={{ sport_code|default:"" }}&amp;page={{ student_majors.previous_page_number }}&amp;sort={{ sort }}&amp;direction={{ direction }}">previous</a>
+        {% endif %}
+		{% for page in student_majors.paginator.page_range %}
+		    {% ifequal page student_majors.number %}
+		        {{ page }}
+		    {% else %}
+		        <a href="{% url 'inbox' %}?eid={{ eid|default:"" }}&amp;ccyys={{ ccyys|default:"" }}&amp;sport_code={{ sport_code|default:"" }}&amp;page={{ page }}&amp;sort={{ sort }}&amp;direction={{ direction }}">{{ page }}</a>
+		    {% endifequal %}
+		{% endfor %}
+        {% if student_majors.has_next %}
+            <a href="{% url 'inbox' %}?eid={{ eid|default:"" }}&amp;ccyys={{ ccyys|default:"" }}&amp;sport_code={{ sport_code|default:"" }}&amp;page={{ student_majors.next_page_number }}&amp;sort={{ sort }}&amp;direction={{ direction }}">next</a>
+        {% endif %}
+    </span>
+</div>
+
+<table class="large-table">
+
+    <thead>  
+    <tr>      
+        <th id="ccyys" class="inbox-ccyys" scope="col">
+            <a class="table-head white" href="{% url 'inbox' %}?eid={{ eid|default:"" }}&amp;ccyys={{ ccyys|default:"" }}&amp;sport_code={{ sport_code|default:"" }}&amp;page={{ student_majors.number }}&amp;sort=ccyys&amp;direction={{ sort_direction }}">Semester</a>
+        </th>
+        <th id="eid" scope="col">
+            <a class="table-head" href="{% url 'inbox' %}?eid={{ eid|default:"" }}&amp;ccyys={{ ccyys|default:"" }}&amp;sport_code={{ sport_code|default:"" }}&amp;page={{ student_majors.number }}&amp;sort=eid&amp;direction={{ sort_direction }}">EID</a>
+        </th>
+        <th id="name" scope="col">
+            <a class="table-head" href="{% url 'inbox' %}?eid={{ eid|default:"" }}&amp;ccyys={{ ccyys|default:"" }}&amp;sport_code={{ sport_code|default:"" }}&amp;page={{ student_majors.number }}&amp;sort=athlete&amp;direction={{ sort_direction }}">Name</a>
+        </th>
+        <th id="school" class="inbox-school" scope="col">
+            <a class="table-head" href="{% url 'inbox' %}?eid={{ eid|default:"" }}&amp;ccyys={{ ccyys|default:"" }}&amp;sport_code={{ sport_code|default:"" }}&amp;page={{ student_majors.number }}&amp;sort=school&amp;direction={{ sort_direction }}">School</a>
+        </th>
+        <th id="major" class="inbox-major" scope="col">
+            <a class="table-head" href="{% url 'inbox' %}?eid={{ eid|default:"" }}&amp;ccyys={{ ccyys|default:"" }}&amp;sport_code={{ sport_code|default:"" }}&amp;page={{ student_majors.number }}&amp;sort=major&amp;direction={{ sort_direction }}">Major</a>
+        </th>
+        <th id="minor" class="inbox-minor" scope="col">
+            <a class="table-head" href="{% url 'inbox' %}?eid={{ eid|default:"" }}&amp;ccyys={{ ccyys|default:"" }}&amp;sport_code={{ sport_code|default:"" }}&amp;page={{ student_majors.number }}&amp;sort=minor&amp;direction={{ sort_direction }}">Minor</a>
+        </th>
+        <th id="catalog" class="inbox-catalog" scope="col">
+            <a class="table-head" href="{% url 'inbox' %}?eid={{ eid|default:"" }}&amp;ccyys={{ ccyys|default:"" }}&amp;sport_code={{ sport_code|default:"" }}&amp;page={{ student_majors.number }}&amp;sort=catalog&amp;direction={{ sort_direction }}">Catalog</a>
+        </th>
+        <th id="sport" class="inbox-sport" scope="col">Sport</th>
+        <th id="ptd_status" scope="col">
+            <a class="table-head" href="{% url 'inbox' %}?eid={{ eid|default:"" }}&amp;ccyys={{ ccyys|default:"" }}&amp;sport_code={{ sport_code|default:"" }}&amp;page={{ student_majors.number}}&amp;sort=status_spd&amp;direction={{ sort_direction }}">SP Status</a>
+        </th>
+        <th id="percent_status" scope="col">
+            <a class="table-head"  href="{% url 'inbox' %}?eid={{ eid|default:"" }}&amp;ccyys={{ ccyys|default:"" }}&amp;sport_code={{ sport_code|default:"" }}&amp;page={{ student_majors.number}}&amp;sort=status_pod&amp;direction={{ sort_direction }}">Percent Status</a>
+        </th>
+        <th id="last_update" scope="col">
+            <a class="table-head"  href="{% url 'inbox' %}?eid={{ eid|default:"" }}&amp;ccyys={{ ccyys|default:"" }}&amp;sport_code={{ sport_code|default:"" }}&amp;page={{ student_majors.number}}&amp;sort=last_update&amp;direction={{ sort_direction }}">Last Update</a>
+        </th>
+        </tr>        
+    </thead>
+    
+    <tbody>               
+        {% for student_major in student_majors %}
+            <tr>
+                <td headers="ccyys">{{ student_major.athlete_ccyys_admin.display_ccyys }}</td>
+                <td headers="eid">{{ student_major.athlete_ccyys_admin.athlete_ccyys.athlete.eid }}</td>
+                <td headers="name">{{ student_major.athlete_ccyys_admin.athlete_ccyys.athlete.name }}</td>
+                <td headers="school">{{ student_major.school }}</td>
+                <td headers="major">{{ student_major.major_name }}</td>
+                <td headers="minor">{{ student_major.minor }}</td>
+                
+                <td headers="catalog">{% if student_major.catalog_begin %}{{ student_major.catalog_begin }}-{{ student_major.catalog_end }} {% endif %}  </td>
+                 
+                <td headers="sport">{% for squad in student_major.athlete_ccyys_admin.athlete_ccyys.squads %} <p>{{ squad.1 }}</p> {% endfor %}</td>
+                {% if student_major.athlete_ccyys_admin.status != 'Form Inactive' %}
+                  <td headers="ptd_status"><a href="{% url 'student_details' major_id=student_major.id %}">{{ student_major.athlete_ccyys_admin.status }}</a></td>
+                {% elif student_major.athlete_ccyys_admin.status == 'Form Inactive' and user_type == 'A' %}
+                    <td headers="ptd_status">
+                        <a href="{%  url 'activate' 'SPD' student_major.athlete_ccyys_admin.id 'A'%}">{{ student_major.athlete_ccyys_admin.status }}</a>
+                    </td>
+                 {% else %}
+                    <td headers="ptd_status">{{ student_major.athlete_ccyys_admin.status }}</td>
+                {% endif %}
+                {% if student_major.percent_degree.status != 'Form Inactive' %}
+                    <td headers="percent_status"><a href="{% url 'percentage_of_degree' major_id=student_major.id %}">{{ student_major.percent_degree.status }}</a></td>
+                {% elif student_major.percent_degree.status == 'Form Inactive' and user_type == 'A' %}
+                    <td headers="percent_status">
+                        <a href="{%  url 'activate' 'PERCENT_DEGREE' student_major.percent_degree.id 'A'%}">{{ student_major.percent_degree.status }}</a>
+                    </td>
+                 {% else %}
+                    <td headers="percent_status">{{ student_major.percent_degree.status }}</td>
+                {% endif %}
+                <td headers="last_updated">{{ student_major.last_update }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="pagination pagination-bottom">
+    <span class="step-links">  
+        {% if student_majors.has_previous %}
+            <a href="{% url 'inbox' %}?eid={{ eid|default:"" }}&amp;ccyys={{ ccyys|default:"" }}&amp;sport_code={{ sport_code|default:"" }}&amp;page={{ student_majors.previous_page_number }}&amp;sort={{ sort }}&amp;direction={{ direction }}">previous</a>
+        {% endif %}
+		{% for page in student_majors.paginator.page_range %}
+		    {% ifequal page student_majors.number %}
+		        {{ page }}
+		    {% else %}
+		        <a href="?page={{ page }}&amp;sort={{ sort }}&amp;direction={{ direction }}">{{ page }}</a>
+		    {% endifequal %}
+		{% endfor %}
+        {% if student_majors.has_next %}
+            <a href="{% url 'inbox' %}?eid={{ eid|default:"" }}&amp;ccyys={{ ccyys|default:"" }}&amp;sport_code={{ sport_code|default:"" }}&amp;page={{ student_majors.next_page_number }}&amp;sort={{ sort }}&amp;direction={{ direction }}">next</a>
+        {% endif %}
+    </span>
+</div>
+<div class="">
+    <div class="instructions_link">
+		<a onclick="open_instructions()">Instructions</a>
+	</div>
+    <div class="contact">
+       <a onclick="contact_form()">Questions or Comments</a>
+    </div>
+    <div class="print">
+        {%  if '?' in this_url %}
+            <a href="{{ this_url }}&export=csv" class="btn btn-default">Download Listing</a>
+        {% else %}
+            <a href="{{ this_url }}?export=csv" class="btn btn-default">Download Listing</a>
+        {% endif %}
+    </div>
+</div>
+</div>
+
+
+
+{% endblock %}

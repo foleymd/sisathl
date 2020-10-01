@@ -1,0 +1,57 @@
+{% load crispy_forms_tags %}
+{% load static from staticfiles %}
+
+{% if first_time_through %}
+<div class="form-inline search">
+<form action="{% url 'custom_form' %}" method="get">
+
+    <label for="eid">EID</label> 
+    
+    
+<a href="https://utdirect.utexas.edu/webapps/eidlisting/directory_listing?affiliation=SDCU&institution=0&attribute=fullname&comparator=contains&searchkey=&s_form_name=ids&s_form_id=SubmitIdForm&s_name_field_name=name_last_first&s_name_field_id=name_id&s_eid_field_name=eid&s_eid_field_id=eid_id" target="_blank">
+<img src="{% static 'spd_form/img/lookup.gif' %}" alt="EID lookup" id="eid_lookup" /></a>
+
+    
+    
+    <input name="eid" id="eid" size="8" maxlength="8" type="text"/>
+
+    <label for="semester">Semester</label>
+    <select name="semester" id="semester">
+        <option value="" {% if current_s == 0 %} 
+            selected="selected"{% endif %}>&nbsp;</option>
+        <option value="9" {% if current_s == 9 %}
+            selected="selected"{% endif %}>Fall</option>
+        <option value="2" {% if current_s == 2 %}
+            selected="selected"{% endif %}>Spring</option>
+        <option value="6" {% if current_s == 6 %}
+            selected="selected"{% endif %}>Summer</option>    
+    </select>  
+
+    <label for="ccyy">Year</label>
+    <select name="ccyy" id="ccyy" size="1">
+        <option value="">&nbsp;</option>
+        
+        {% for year in YEARS %}
+            <option value="{{ year }}" 
+                {% if current_ccyy = year %}
+                selected="selected"{% endif %}>{{ year }}
+            </option>
+        {% endfor %}                            
+    </select>
+
+    <input type ="submit" id="eid_ccyys_submit" name="eid_ccyys_submit" value="Submit">
+</form>
+</div>
+{% else %}
+
+
+<form action="{% url 'custom_form' %}" method="post">{% csrf_token %}
+
+    <div class="form-inline">
+        {% crispy form form.helper %}
+    </div>
+
+    <input type ="submit" id="loaded_submit" name="loaded_submit" value="Create custom form(s)">
+</form>
+
+{% endif %}

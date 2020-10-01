@@ -1,0 +1,174 @@
+{% load static from staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<link href="{% static "spd_form/css/main.min.css" %}" rel="stylesheet" />
+
+<title>Change log</title>
+</head>
+<body class="popup_container">
+<div class="container">
+  <div class="popup"><div class="popup popup_inner log_record_inner">
+  <h1> Change log for {{ name }} ({{ eid }})</h1>
+    <div id="before_record" class="row">
+        <div class="row">
+            <div class="col-sm-12">
+                <h3>Before</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-5">
+                <dl class="dl-horizontal">
+                    <dt>College Code</dt>
+                    <dd id="before_school_code">{{ before.school_code }}</dd>
+                    <dt>College Name</dt>
+                    <dd id="before_school_name">{{ before.school_name }}</dd>
+                    <dt>Major Code</dt>
+                    <dd id="before_major_code">{{ before.major_code }}</dd>
+                    <dt>Major Name</dt>
+                    <dd id="before_major_name">{{ before.major_name }}</dd>
+                    <dt>Minor</dt>
+                    <dd id="before_minor">{{ before.minor }}</dd>
+                    <dt>Catalog</dt>
+                    <dd id="before_catalog">{{ before.catalog_begin }} - {{ before.catalog_end }}</dd>
+                </dl>
+            </div>
+
+            <div class="col-sm-8 log_table_col">
+                {% if before.courses %}
+                <table id="before_table"  class="table-condensed">
+                    <thead>
+                        <tr id="before_course_header">
+                            <th>Course Cat</th>
+                            <th>Course Num</th>
+                            <th>Unique</th>
+                            <th>Hours</th>
+                            <th>Countable</th>
+                            <th>Min Grade</th>
+                            <th>P/F Accepted</th>
+                            <th>Grade</th>
+                        </tr>
+                    </thead>
+                    <tbody id="before_course_body">
+                        {% for course in before.courses %}
+                        <tr>
+                            <td>{{ course.course_category }}</td>
+                            <td>{{ course.course_number }}</td>
+                            <td>{{ course.unique }}</td>
+                            <td>{{ course.credit_hours }}</td>
+                            <td>{{ course.countable }}</td>
+                            <td>{{ course.min_grade_required}}</td>
+                            <td>{{ course.pass_fail_accepted }}</td>
+                            <td>{{ course.grade }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+               {% else %}
+                    <p>No courses on record.</p>
+               {% endif %}
+            </div>
+        </div><!-- end row 2 -->
+        <div class="row">
+            <div class="col-sm-12">
+                <dl class="dl-horizontal large_dl">
+                    <dt class="non_overflow">Projected Countable Hours:</dt>
+                    <dd id="before_projected_countable_hours">{{ before.projected_countable_hours }}</dd>
+                    <dt class="non_overflow">Total Hours Required:</dt>
+                    <dd id="before_total_hours_required">{{ before.total_hours_required }}</dd>
+                    <dt class="non_overflow">Projected Percentage:</dt>
+                    <dd id="before_projected_percentage">{{ before.projected_percentage }}</dd>
+                    <dt class="non_overflow">Final Countable Hours:</dt>
+                    <dd id="before_final_countable_hours">{{ before.final_countable_hours }}</dd>
+                    <dt class="non_overflow">Final Percentage:</dt>
+                    <dd id="before_final_percentage">{{ before.final_percentage }}</dd>
+                </dl>
+            </div>
+        </div><!--  end percent row -->
+    </div><!--  before record -->
+
+    <div id="after_record" class="row">
+        <div class="row">
+            <div class="col-sm-12">
+                <h3>After</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-5">
+                <dl class="dl-horizontal">
+                    <dt>College Code</dt>
+                    <dd id="after_school_code">{{ after.school_code }}</dd>
+                    <dt>College Name</dt>
+                    <dd id="after_school_name">{{ after.school_name }}</dd>
+                    <dt>Major Code</dt>
+                    <dd id="after_major_code">{{ after.major_code }}</dd>
+                    <dt>Major Name</dt>
+                    <dd id="after_major_name">{{ after.major_name }}</dd>
+                    <dt>Minor</dt>
+                    <dd id="after_minor">{{ after.minor }}</dd>
+                    <dt>Catalog</dt>
+                    <dd id="after_catalog">{{ after.catalog_begin }} - {{ after.catalog_end }}</dd>
+                </dl>
+            </div>
+
+            <div class="col-sm-8 log_table_col">
+                {% if after.courses %}
+                <table id="after_table" class="table-condensed">
+                    <thead>
+                        <tr id="after_course_header">
+                            <th>Course Cat</th>
+                            <th>Course Num</th>
+                            <th>Unique</th>
+                            <th>Hours</th>
+                            <th>Countable</th>
+                            <th>Min Grade</th>
+                            <th>P/F Accepted</th>
+                            <th>Grade</th>
+                        </tr>
+                    </thead>
+                    <tbody id="after_course_body">
+                    {% for course in after.courses %}
+                        <tr>
+                            <td>{{ course.course_category }}</td>
+                            <td>{{ course.course_number }}</td>
+                            <td>{{ course.unique }}</td>
+                            <td>{{ course.credit_hours }}</td>
+                            <td>{{ course.countable }}</td>
+                            <td>{{ course.min_grade_required}}</td>
+                            <td>{{ course.pass_fail_accepted }}</td>
+                            <td>{{ course.grade }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                    <p>No courses on record.</p>
+               {% endif %}
+            </div>
+        </div><!-- end row 2 -->
+            <div class="row">
+            <div class="col-sm-12">
+                <dl class="dl-horizontal large_dl">
+                    <dt class="non_overflow">Projected Countable Hours:</dt>
+                    <dd id="after_projected_countable_hours">{{ after.projected_countable_hours }}</dd>
+                    <dt class="non_overflow">Total Hours Required:</dt>
+                    <dd id="after_total_hours_required">{{ after.total_hours_required }}</dd>
+                    <dt class="non_overflow">Projected Percentage:</dt>
+                    <dd id="after_projected_percentage">{{ after.projected_percentage }}</dd>
+                    <dt class="non_overflow">Final Countable Hours:</dt>
+                    <dd id="after_final_countable_hours">{{ after.final_countable_hours }}</dd>
+                    <dt class="non_overflow">Final Percentage:</dt>
+                    <dd id="after_final_percentage">{{ after.final_percentage }}</dd>
+                </dl>
+            </div>
+        </div><!--  end percent row -->
+    </div><!--  after record -->
+
+</div></div>
+
+</div><!--container-->
+
+</body>
+</html>

@@ -1,0 +1,54 @@
+<div class="form-inline search">
+<h4>View different semester:</h4>
+<form method="get" action="{% url 'log' %}">
+
+
+    <label for="form_s">Semester</label>
+    <select name="form_s" id="form_s">
+        <option value="" selected="selected"></option>
+        <option value="9" {% if current_s == 9 %}
+            selected="selected"{% endif %}>Fall</option>
+        <option value="2" {% if current_s == 2 %}
+            selected="selected"{% endif %}>Spring</option>
+        <option value="6" {% if current_s == 6 %}
+            selected="selected"{% endif %}>Summer</option>    
+    </select>  
+    <label for="form_ccyy">Year</label>
+    <select name="form_ccyy" id="form_ccyy" size="1">
+        <option value=""></option>
+            
+        {% for year in YEARS %}
+            <option value="{{ year }}" 
+                {% if current_ccyy = year %}
+                selected="selected"{% endif %}>{{ year }}
+            </option>
+        {% endfor %}                           
+    </select>        
+  
+    <input type="submit" value="Submit">
+
+</form>
+
+</div>
+
+<div class="form-inline search">
+<h4>View different student:</h4>
+<form method="get" action="{% url 'log' %}">
+
+    <label for="input_eid">EID</label> 
+    <input type="text" name="student" id="input_eid" size="8" maxlength="8" />
+
+
+    <input type="submit" value="Submit">
+</form>
+</div>
+
+<div class="form-inline search">
+<h4>View by updater:</h4>
+<form method="get" action="{% url 'log' %}">
+
+    <label for="updater_eid">EID</label> 
+    <input type="text" name="updater" id="updater_eid" size="8" maxlength="8" />
+    <input type="submit" value="Submit">
+</form>
+</div>

@@ -1,0 +1,43 @@
+{% load static from staticfiles %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="{% static "spd_form/css/main.min.css" %}">
+<script type="text/Javascript" src="{% static 'spd_form/js/jquery-1.11.2.min.js' %}"></script>
+<script type="text/Javascript" src="{% static 'spd_form/js/bootstrap.min.js' %}"></script>
+
+<title>{% block title %}{% endblock %}</title>
+</head>
+
+<body>
+<div class="logo"><a href="http://www.utexas.edu/" target="_blank">
+<img src="{% static 'spd_form/img/RGB_university_formal_horizontal.png' %}" alt="UT Logo" id="UT_logo" /></a></div>
+<div class="wrapper">
+
+   		<h1>{% block main_header %}{% endblock %}</h1>
+
+    <div class="nav">
+        <div class="nav_ul">
+            {% block nav_items %}
+                <!--Nav items need to look like such:  <a class="nav-a" href=""><span class="nav_li">Home</span></a>-->
+            {% endblock %}
+            <a class="nav-a" href="/security-443/logoff.cgi?goto=http://www.utexas.edu"><span class="nav_li">Logoff</span></a>
+		</div>
+    </div>
+
+    <div class="content">
+  	    <h3>{% block inner_header %}{% endblock %}</h3>
+  	    <div>{% include "content_messages.html" %}</div>
+        <div>{% block content %}    {% endblock %}</div>
+    </div>
+
+</div>
+
+{% block scripts %}{% endblock %}
+<script type="text/Javascript" src="{% static 'spd_form/js/spd_form.js' %}"></script>
+</body>
+</html>
